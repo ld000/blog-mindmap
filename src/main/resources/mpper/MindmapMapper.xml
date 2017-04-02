@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.k2data.k2app.bu.mapper.MindMapMapper">
+    <resultMap id="MindMapMap" type="MindMap">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="mindmap_id" property="mindMapId" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="selections" property="selections" jdbcType="VARCHAR"/>
+        <result column="version_no" property="versionNo" jdbcType="VARCHAR"/>
+        <result column="head_flag" property="headFlag" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getMindMap" resultMap="MindMapMap">
+        select id, mindmap_id, content, version_no, head_flag, create_time, update_time from bu_mindmap
+    </select>
+
+    <select id="getMindMapByMindMapId" resultMap="MindMapMap">
+        select id, mindmap_id, content, selections, version_no, head_flag, create_time, update_time from bu_mindmap
+        where mindmap_id=#{mindMapId} AND head_flag=1
+        limit 1
+    </select>
+
+    <update id="updateMindMapHeadFlag">
+      update bu_mindmap set head_flag=0, update_time=sysdate() where mindmap_id=#{mindMapId} AND head_flag=1
+    </update>
+
+    <insert id="saveMindMap">
+        insert into bu_mindmap(mindmap_id, content, selections, version_no, head_flag, create_time, update_time)
+        VALUES (#{mindMapId}, #{content}, #{selections}, unix_timestamp(now()), 1, sysdate(), sysdate())
+    </insert>
+
+</mapper>

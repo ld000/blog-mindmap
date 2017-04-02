@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    name: prod-mindmap
+    url: jdbc:mysql://
+    username:
+    password:
+    driver-class-name: com.mysql.jdbc.Driver
